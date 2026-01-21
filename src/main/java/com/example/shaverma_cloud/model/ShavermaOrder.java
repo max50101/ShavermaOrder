@@ -1,16 +1,26 @@
 package com.example.shaverma_cloud.model;
 
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import org.hibernate.validator.constraints.CreditCardNumber;
 
+
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
-public class ShavermaOrder {
+@Entity
+public class ShavermaOrder implements Serializable {
+    private static final long serialVersionUID=1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+    private Date placedAt;
     @NotBlank(message = "Your name couldn't be empty")
     private String deliveryName;
     @NotBlank(message = "Your street couldn't be empty")
@@ -20,12 +30,14 @@ public class ShavermaOrder {
     private String deliveryState;
     @Digits(integer = 6, fraction = 0,message = "Your zip code must be 6 digits ")
     private String deliveryZip;
-    @CreditCardNumber(message = "Must be valid card number")
+
     private String ccNumber;
-    @Pattern(regexp = "^(0[1-9]|1[0-2])([\\/])(2[5-9]|[3-9][0-9])$",message = "incorrect month/year format")
+
     private String ccExpiration;
     @Digits(integer = 3, fraction = 0,message = "Your cvv code must be 3 digits ")
     private String ccCVV;
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Shaverma> shavermas = new ArrayList<>();
 
     public String getDeliveryName() {
         return deliveryName;
@@ -46,6 +58,9 @@ public class ShavermaOrder {
     public String getDeliveryCity() {
         return deliveryCity;
     }
+
+
+
 
     public ShavermaOrder(String deliveryName, String deliveryStreet,
                          String deliveryCity, String deliveryState, String deliveryZip,
@@ -118,7 +133,6 @@ public class ShavermaOrder {
 
 
 
-    private List<Shaverma> shavermas = new ArrayList<>();
 
     public void addShaverma(Shaverma shaverma) {
         this.shavermas.add(shaverma);

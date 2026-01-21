@@ -4,8 +4,10 @@ import com.example.shaverma_cloud.model.Ingredient;
 import com.example.shaverma_cloud.model.Ingredient.Type;
 import com.example.shaverma_cloud.model.Shaverma;
 import com.example.shaverma_cloud.model.ShavermaOrder;
+import com.example.shaverma_cloud.repository.IngredientRepository;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -14,26 +16,26 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Slf4j
 @Controller
 @RequestMapping("/design")
 @SessionAttributes("shavermaOrder")
-public class DesignShavermaController{
+public class DesignShavermaController {
+
+    private final IngredientRepository ingredientRepo;
+
+    @Autowired
+    public DesignShavermaController(IngredientRepository ingredientRepo) {
+        this.ingredientRepo = ingredientRepo;
+    }
+
     @ModelAttribute
     public void addIngredientsToModel(Model model) {
-        List<Ingredient> ingredients = Arrays.asList(
-                new Ingredient("FLTO", "Flour lavash", Type.WRAP),
-                new Ingredient("COTO", "Corn lavash", Type.WRAP),
-                new Ingredient("GRBF", "Ground Beef", Type.PROTEIN),
-                new Ingredient("CARN", "Carnitas", Type.PROTEIN),
-                new Ingredient("TMTO", "Diced Tomatoes", Type.VEGGIES),
-                new Ingredient("LETC", "Lettuce", Type.VEGGIES),
-                new Ingredient("CHED", "Cheddar", Type.CHEESE),
-                new Ingredient("JACK", "Monterrey Jack", Type.CHEESE),
-                new Ingredient("SLSA", "Salsa", Type.SAUCE),
-                new Ingredient("SRCR", "Sour Cream", Type.SAUCE)
-        );
+        List<Ingredient> ingredients = StreamSupport
+                .stream(ingredientRepo.findAll().spliterator(), false)
+                .collect(Collectors.toList());
         Type[] types = Ingredient.Type.values();
         for (Type type : types) {
             model.addAttribute(type.toString().toLowerCase(), filterByType(ingredients, type));
@@ -64,11 +66,11 @@ public class DesignShavermaController{
     @PostMapping
     public String processShaverma(@Valid Shaverma shaverma,
                                   Errors erros, @ModelAttribute ShavermaOrder order) {
-        if(erros.hasErrors()){
+        if (erros.hasErrors()) {
             return "/design";
         }
         order.addShaverma(shaverma);
-        log.info("Processing shaverma",shaverma);
+        log.info("Processing shaverma", shaverma);
         return "redirect:/orders/current";
     }
 }

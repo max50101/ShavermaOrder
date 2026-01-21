@@ -1,10 +1,16 @@
 package com.example.shaverma_cloud.model;
 
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import lombok.*;
+
+
 
 @Data
-public class Ingredient {
+@Entity
+@NoArgsConstructor(access = AccessLevel.PRIVATE,force = true)
+public class Ingredient  {
+    @Id
     private final String id;
     private final String name;
     private final Type type;
