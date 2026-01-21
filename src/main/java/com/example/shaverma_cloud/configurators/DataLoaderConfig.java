@@ -7,8 +7,11 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import com.example.shaverma_cloud.model.Ingredient.Type;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
 import java.util.List;
+
+@Profile("!test")
 @Configuration
 @Slf4j
 public class DataLoaderConfig {

@@ -67,6 +67,7 @@ public class DesignShavermaController {
     public String processShaverma(@Valid Shaverma shaverma,
                                   Errors erros, @ModelAttribute ShavermaOrder order) {
         if (erros.hasErrors()) {
+            log.info("Error");
             return "/design";
         }
         order.addShaverma(shaverma);
