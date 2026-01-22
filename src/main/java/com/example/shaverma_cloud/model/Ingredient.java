@@ -1,19 +1,20 @@
 package com.example.shaverma_cloud.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 import lombok.*;
-
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.PersistenceCreator;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 
 @Data
-@Entity
+@Document
 @NoArgsConstructor(access = AccessLevel.PRIVATE,force = true)
 public class Ingredient  {
     @Id
     private final String id;
     private final String name;
     private final Type type;
+    @PersistenceCreator
     public Ingredient(String id, String name, Type type) {
         this.id = id;
         this.name = name;

@@ -1,11 +1,14 @@
 package com.example.shaverma_cloud.model;
 
-import jakarta.persistence.*;
+
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import org.hibernate.validator.constraints.CreditCardNumber;
+
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 
 import java.io.Serializable;
@@ -14,12 +17,11 @@ import java.util.Date;
 import java.util.List;
 
 
-@Entity
+@Document
 public class ShavermaOrder implements Serializable {
     private static final long serialVersionUID=1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private String id;
     private Date placedAt;
     @NotBlank(message = "Your name couldn't be empty")
     private String deliveryName;
@@ -36,7 +38,7 @@ public class ShavermaOrder implements Serializable {
     private String ccExpiration;
     @Digits(integer = 3, fraction = 0,message = "Your cvv code must be 3 digits ")
     private String ccCVV;
-    @OneToMany(cascade = CascadeType.ALL)
+
     private List<Shaverma> shavermas = new ArrayList<>();
 
     public String getDeliveryName() {

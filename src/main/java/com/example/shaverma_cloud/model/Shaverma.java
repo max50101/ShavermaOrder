@@ -1,17 +1,16 @@
 package com.example.shaverma_cloud.model;
 
-import jakarta.persistence.*;
+
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 import java.util.Date;
 import java.util.List;
-@Entity
+
 @Data
 public class Shaverma {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+
     private Long id;
 
     private Date createdAt=new Date();
@@ -21,7 +20,7 @@ public class Shaverma {
 
     @NotNull
     @Size(min=3,message = "Shaverma at least has to contain 3 ingredients")
-    @ManyToMany
+
     private List<Ingredient> ingredients;
 
     public Shaverma(String name, List<Ingredient> ingredients) {

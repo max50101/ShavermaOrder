@@ -5,7 +5,7 @@ import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 
-public interface OrderRepository extends CrudRepository<ShavermaOrder,Long> {
+public interface OrderRepository extends CrudRepository<ShavermaOrder,String> {
     List<ShavermaOrder> findByDeliveryZip(String deliveryZip);
 }
 
