@@ -1,5 +1,6 @@
 package com.example.shaverma_cloud.model;
 
+import com.example.shaverma_cloud.user.entity.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotBlank;
@@ -38,6 +39,17 @@ public class ShavermaOrder implements Serializable {
     private String ccCVV;
     @OneToMany(cascade = CascadeType.ALL)
     private List<Shaverma> shavermas = new ArrayList<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User user;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public String getDeliveryName() {
         return deliveryName;
